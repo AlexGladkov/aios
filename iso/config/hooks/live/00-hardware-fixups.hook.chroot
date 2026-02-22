@@ -1,0 +1,46 @@
+#!/bin/sh
+set -e
+
+# ── Install kernel 6.16+ from sid ──────────────────────────────────
+# Trixie ships kernel 6.12 which lacks nouveau Blackwell (GB203) support.
+# Nouveau for NVIDIA RTX 5070 Ti (GB203) requires kernel 6.16+.
+# The sid repo and pinning are configured in archives/sid-kernel.*.chroot.
+
+echo ">>> Installing sid kernel for Blackwell nouveau support..."
+apt-get update
+# Only install kernel image, NOT headers — sid headers pull gcc-15
+# which conflicts with Trixie's gcc-14. Headers are unnecessary on a live ISO.
+apt-get install -y -t unstable linux-image-amd64
+
+# Remove the old Trixie kernel to keep ISO size down.
+NEWEST=$(ls /boot/vmlinuz-* 2>/dev/null | sort -V | tail -1 | sed 's|/boot/vmlinuz-||')
+if [ -n "$NEWEST" ]; then
+    OLD_KERNELS=$(dpkg -l 'linux-image-[0-9]*' 2>/dev/null \
+        | awk '/^ii/{print $2}' \
+        | grep -v "$NEWEST") || true
+    if [ -n "$OLD_KERNELS" ]; then
+        echo ">>> Removing old kernel(s): $OLD_KERNELS"
+        apt-get purge -y $OLD_KERNELS 2>/dev/null || true
+    fi
+fi
+
+# Also upgrade firmware from sid for Blackwell GSP support
+apt-get install -y -t unstable firmware-nvidia-graphics firmware-misc-nonfree \
+    firmware-linux-nonfree 2>/dev/null || true
+
+# ── Upgrade mesa from sid ─────────────────────────────────────────
+# Trixie ships mesa 25.0 which lacks NVK support for Blackwell (GB203).
+# Mesa 25.2+ (in sid) adds NVK Vulkan + OpenGL via Zink for Blackwell.
+echo ">>> Upgrading mesa for Blackwell NVK support..."
+apt-get install -y -t unstable \
+    mesa-vulkan-drivers libgl1-mesa-dri libegl-mesa0 libgbm1 \
+    libglx-mesa0 mesa-utils 2>/dev/null || true
+
+# ── Remove nouveau blacklist ───────────────────────────────────────
+# nvidia-alternative packages install a modprobe blacklist that blocks
+# nouveau from loading. Remove it so sway can use nouveau as DRM backend.
+rm -f /etc/modprobe.d/nvidia-blacklists-nouveau.conf
+rm -f /etc/modprobe.d/nvidia.conf
+
+apt-get autoremove -y 2>/dev/null || true
+echo ">>> Kernel: $(ls /boot/vmlinuz-* 2>/dev/null | sort -V | tail -1)"

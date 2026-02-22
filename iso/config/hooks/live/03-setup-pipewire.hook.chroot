@@ -3,7 +3,7 @@ set -e
 
 # Enable PipeWire for user session
 # PipeWire runs as user service, enabled via systemd user units
-# These should be auto-enabled on Bookworm but ensure:
+# These should be auto-enabled on Trixie but ensure:
 
 mkdir -p /etc/skel/.config/systemd/user/default.target.wants
 

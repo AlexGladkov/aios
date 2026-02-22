@@ -3,7 +3,7 @@
 # Usage: docker build -t aios-iso-builder iso/
 #        docker run --rm --privileged -v $(pwd)/output:/output aios-iso-builder
 
-FROM debian:bookworm
+FROM debian:trixie
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \

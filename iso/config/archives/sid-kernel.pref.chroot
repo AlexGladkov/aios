@@ -1,0 +1,21 @@
+# Default: prevent ALL sid packages from being installed
+Package: *
+Pin: release a=unstable
+Pin-Priority: 50
+
+# Kernel image from sid (nouveau Blackwell needs 6.16+)
+# Headers excluded — they pull gcc-15 which conflicts with Trixie's gcc-14
+Package: linux-image-*
+Pin: release a=unstable
+Pin-Priority: 900
+
+# Firmware from sid (Blackwell GSP firmware for nouveau)
+Package: firmware-*
+Pin: release a=unstable
+Pin-Priority: 900
+
+# Mesa + its runtime deps from sid (NVK Blackwell needs mesa 25.2+)
+# libdrm and libwayland are required by sid mesa and must match
+Package: mesa-* libgl1-mesa-* libegl-mesa* libgbm* libglx-mesa* libgles2-mesa* libegl1-mesa* mesa-libgallium libdrm* libwayland*
+Pin: release a=unstable
+Pin-Priority: 900
