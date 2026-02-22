@@ -18,6 +18,9 @@ exec_always export MOZ_ENABLE_WAYLAND=1
 exec_always export QT_QPA_PLATFORM=wayland
 exec_always export XCURSOR_SIZE=24
 
+# GPU-specific env vars are set by /etc/profile.d/gpu-env.sh at login
+# (auto-detects NVIDIA / AMD / Intel / software fallback)
+
 # Appearance
 default_border pixel 2
 gaps inner 0

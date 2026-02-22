@@ -10,9 +10,11 @@ WORKSPACE="/workspace"
 mkdir -p "$WORKSPACE"
 
 echo "Copying build config to workspace..."
+rm -rf "$WORKSPACE/config" "$WORKSPACE/auto"
 cp -r /build-config/config "$WORKSPACE/config"
 cp -r /build-config/auto   "$WORKSPACE/auto"
 chmod +x "$WORKSPACE/auto/config"
+find "$WORKSPACE/config/hooks" -name '*.hook.chroot' -exec chmod +x {} +
 
 cd "$WORKSPACE"
 
@@ -22,11 +24,11 @@ lb clean --purge 2>/dev/null || true
 echo "Configuring live-build..."
 lb config
 
-# Verify distribution is bookworm (catch misconfiguration early)
-if grep -q 'LB_DISTRIBUTION="bookworm"' .build/config 2>/dev/null; then
-    echo "  Distribution: bookworm (OK)"
+# Verify distribution (catch misconfiguration early)
+if grep -q 'LB_DISTRIBUTION="trixie"' .build/config 2>/dev/null; then
+    echo "  Distribution: trixie (OK)"
 else
-    echo "  WARNING: Could not verify distribution is bookworm"
+    echo "  WARNING: Could not verify distribution is trixie"
 fi
 
 # Verify that AIOS binaries are present in the chroot overlay.

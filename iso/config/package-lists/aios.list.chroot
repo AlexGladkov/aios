@@ -1,4 +1,4 @@
-# Window Manager (sway is available in bookworm; labwc is not)
+# Window Manager
 sway
 xwayland
 
@@ -19,7 +19,8 @@ wpasupplicant
 
 # D-Bus and system
 dbus-user-session
-policykit-1
+polkitd
+pkexec
 systemd-sysv
 
 # Fonts
@@ -32,8 +33,24 @@ bash-completion
 curl
 ca-certificates
 
-# Hardware support
+# Firmware (non-free for modern GPU, Wi-Fi, Ethernet hardware)
 firmware-linux-free
+firmware-linux-nonfree
+firmware-misc-nonfree
+firmware-realtek
+firmware-atheros
+firmware-iwlwifi
+firmware-amd-graphics
+firmware-nvidia-graphics
+
+# GPU / Vulkan runtime (required by Iced/wgpu GUI)
+libvulkan1
+mesa-vulkan-drivers
+libgl1-mesa-dri
+mesa-utils
+
+# PCI/USB hardware detection
+pciutils
 
 # Desktop background
 swaybg

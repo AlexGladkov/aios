@@ -1,6 +1,6 @@
 # AIOS — AI-First Operating System
 
-A minimal Linux distribution where the only interface is an AI chat and a web browser. Built on Debian Bookworm with a Rust-native UI stack.
+A minimal Linux distribution where the only interface is an AI chat and a web browser. Built on Debian Trixie with a Rust-native UI stack.
 
 ## Architecture
 
@@ -93,7 +93,7 @@ cargo clippy --workspace
 
 ## ISO Contents
 
-- **Base**: Debian 12 (Bookworm), kernel 6.1
+- **Base**: Debian 13 (Trixie), kernel 6.16+
 - **Window Manager**: sway (Wayland)
 - **Login**: greetd (auto-login as `aios`)
 - **Browser**: Chromium (managed policy, Wayland-native)

@@ -1,8 +1,8 @@
 # AIOS Rust Build Container
-# Builds all Rust binaries inside Debian Bookworm to match the target ISO environment.
+# Builds all Rust binaries inside Debian Trixie to match the target ISO environment.
 # Usage: built automatically via `make build-linux`
 
-FROM debian:bookworm
+FROM debian:trixie
 
 # Install system dependencies required by Rust crates used in this workspace:
 #   - build-essential, pkg-config: base toolchain

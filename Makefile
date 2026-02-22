@@ -6,7 +6,7 @@ AIOS_BINS := aios-agent aios-chat aios-dock aios-confirm
 BIN_DIR   := iso/config/includes.chroot/usr/local/bin
 
 # -----------------------------------------------------------------------
-# Build Rust binaries for Linux x86_64 inside a Debian Bookworm container.
+# Build Rust binaries for Linux x86_64 inside a Debian Trixie container.
 # Docker volumes persist the Cargo registry and build cache across runs
 # to avoid full recompilation on every invocation.
 # Only the four ISO-targeted binaries are compiled.
@@ -31,7 +31,7 @@ install-binaries:
 	docker run --rm \
 		-v aios-target-cache:/src/target:ro \
 		-v "$(PWD)/$(BIN_DIR)":/output \
-		debian:bookworm \
+		debian:trixie \
 		sh -c 'cp $(addprefix /src/target/release/,$(AIOS_BINS)) /output/'
 	@echo "Installed binaries:"
 	@ls -lh $(BIN_DIR)/aios-*
